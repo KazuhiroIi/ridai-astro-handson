@@ -1,0 +1,29 @@
+@layer reset, base;
+
+@import 'sanitize.css' layer(reset);
+
+@layer base {
+  html {
+    font-size: 16px;
+    font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Noto Sans JP', Meiryo, sans-serif;
+    background-color: white;
+    color: black;
+  }
+
+  body {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    grid-template-columns: 100%;
+    min-height: 100vh;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+  h2 {
+    font-size: 1.5rem;
+  }
+  h3 {
+    font-size: 1.25rem;
+  }
+}
