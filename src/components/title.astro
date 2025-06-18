@@ -1,0 +1,24 @@
+---
+// src/components/title.astro
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+<div class="title">
+  <h1>{title}</h1>
+</div>
+
+<style>
+.title {
+  width: 100%;
+
+  h1 {
+    width: fit-content;
+    text-align: center;
+    margin: 20px auto;
+    border-bottom: 3px solid #6476b6;
+  }
+}
+</style>
