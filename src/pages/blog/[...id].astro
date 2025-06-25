@@ -1,0 +1,97 @@
+---
+import { Image } from 'astro:assets';
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import Container from '../../components/container.astro';
+import Default from '../../layouts/default.astro';
+
+export async function getStaticPaths() {
+  const blogEntries = await getCollection('blog');
+  return blogEntries.map((entry) => ({
+    params: { id: entry.id },
+    props: { entry },
+  }));
+}
+
+interface Props {
+  entry: CollectionEntry<'blog'>;
+}
+
+const { entry } = Astro.props; 
+// <TagName arg="value">のように指定したargは、Astro.propsに格納されるので、それを取得する
+// ここでは、content.config.tsで定義したスキーマ通りのentryが格納されている
+
+const { Content } = await render(entry); 
+// この一文により、Contentがhtmlタグとして使えるようになる
+
+interface ImageModule {
+  default: ImageMetadata;
+}
+const imageModules = import.meta.glob<ImageModule>('../../images/*.{png,jpg,jpeg,gif,webp,avif}', { eager: true });
+const image = imageModules[`../../images/${entry.data.cover}`];
+---
+
+
+<Default>
+  <Container>
+    <article class="content">
+      <h1 class="content__title">{entry.data.title}</h1>
+      <div class="content__meta">
+        <div class="content__created">
+          制作日時: {entry.data.created}
+        </div>
+        <div class="content__updated">
+          更新日時: {entry.data.updated ?? entry.data.created}
+        </div>
+      </div>
+      <div class="content__cover">
+        <Image
+          src={image.default}
+          alt={entry.data.title}
+        />
+      </div>
+      <div class="content__body">
+        <Content />
+      </div>
+    </article>
+  </Container>
+</Default>
+
+<style>
+.content {
+  width: 100%;
+  margin-inline: auto;
+
+  @media screen and (min-width: 768px) {
+    width: 80%;
+  }
+}
+
+.content__cover {
+  width: 100%;
+  height: auto;
+  text-align: center;
+  margin-bottom: 2rem;
+
+  img {
+    width: 100%;
+    height: auto;
+    margin-inline: auto;
+  }
+}
+
+
+.content__title {
+  margin-bottom: 0;
+  border-bottom: 1px solid #ccc;
+  padding-inline: 1rem;
+}
+
+.content__meta {
+  padding: 0.5rem;
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  color: #666;
+}
+
+</style>
