@@ -1,7 +1,90 @@
 ---
-import Default from '../layouts/default.astro'
+// src/pages/index.astro
+import { Image } from "astro:assets";
+import { getCollection } from 'astro:content';
+import BlogCard from "../components/blogcard.astro";
+import Container from "../components/container.astro";
+import Title from "../components/title.astro";
+import Default from "../layouts/default.astro";
+
+import cover from '../images/cover.jpg';
+
+// ブログ記事をすべて取得
+const blogEntries = await getCollection('blog');
+
+// 画像のインポート（画像ファイルを一括で読み込む）
+interface ImageModule {
+  default: ImageMetadata;
+}
+const imageModules = import.meta.glob<ImageModule>('../images/*.{png,jpg,jpeg,gif,webp,avif}', { eager: true });
 ---
 
 <Default>
-	<h1>Hello, World!</h1>
+	<main>
+		<div class="cover">
+			<Image
+				src={cover}
+				alt="Cover"
+				class="cover__image"
+				width={1280}
+				loading="eager"
+			/>
+		</div>
+		<Container>
+			<Title title="Welcome to My Astro Site" />
+			<p class="intro-text">
+				このサイトはAstroを使用して構築されたサンプルサイトです。最新のブログ記事やプロジェクト情報をチェックしてください。
+			</p>
+			
+			<!-- ブログ記事一覧セクション -->
+			<section class="blog-section">
+				<h2 class="blog-section__title">最新のブログ記事</h2>
+				<div class="blog-grid">
+					{blogEntries.map((entry) => {
+						const image = imageModules[`../images/${entry.data.cover}`];
+						return (
+							<BlogCard entry={entry} image={image} />
+						);
+					})}
+				</div>
+			</section>
+		</Container>
+	</main>
 </Default>
+
+<style>
+.cover {
+	width: 100%;
+	height: 300px;
+	overflow: hidden;
+	img {
+		width: 100%;
+		height: auto;
+	}
+}
+
+.blog-section {
+	margin-top: 3rem;
+}
+
+.blog-section__title {
+	font-size: 1.75rem;
+	font-weight: 700;
+	margin-bottom: 2rem;
+	text-align: center;
+	color: #333;
+	position: relative;
+}
+
+.blog-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+	gap: 1.5rem;
+	margin-bottom: 2.5rem;
+
+	@media (min-width: 768px) {
+		grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+		gap: 2rem;
+	}
+}
+</style>
