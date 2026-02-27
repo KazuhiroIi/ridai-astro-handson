@@ -1,7 +1,14 @@
 import { defineConfig } from 'astro/config';
 
+import cloudflare from '@astrojs/cloudflare';
+
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://KazuhiroIi.github.io', // https://<あなたのGitHubのユーザー名>.github.io
-  base: 'ridai-astro-handson', // GitHubでのレポジトリ名
+  // https://<あなたのGitHubのユーザー名>.github.io
+  site: 'https://KazuhiroIi.github.io',
+
+  // GitHubでのレポジトリ名
+  base: 'ridai-astro-handson',
+
+  adapter: cloudflare()
 });
