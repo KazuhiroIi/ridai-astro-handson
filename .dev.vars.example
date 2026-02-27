@@ -1,0 +1,6 @@
+# Cloudflare Access JWT 検証用シークレット (ローカル開発専用)
+# このファイルを .dev.vars にコピーして実際の値を記入してください
+# .dev.vars は .gitignore に登録済みのためコミットされません
+
+CF_ACCESS_AUD=your-cloudflare-access-aud-token-here
+CF_ACCESS_JWK_URL=https://<your-team>.cloudflareaccess.com/cdn-cgi/access/certs
