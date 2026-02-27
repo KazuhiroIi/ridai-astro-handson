@@ -1,0 +1,20 @@
+{
+  "name": "ridai-astro-handson",
+  "compatibility_date": "2026-02-27",
+  "main": "./dist/_worker.js",
+  "assets": {
+    "directory": "./dist"
+  }
+  // Cloudflare Access JWT 検証に必要なシークレットは wrangler secret put で登録してください:
+  //
+  //   pnpx wrangler secret put CF_ACCESS_AUD
+  //     → Cloudflare Access アプリケーションの AUD トークンを入力
+  //
+  //   pnpx wrangler secret put CF_ACCESS_JWK_URL
+  //     → Cloudflare Access の JWKS URL を入力
+  //       例: https://<team>.cloudflareaccess.com/cdn-cgi/access/certs
+  //
+  // ローカル開発時は .dev.vars ファイルに以下を記述してください:
+  //   CF_ACCESS_AUD=<your-aud>
+  //   CF_ACCESS_JWK_URL=https://<team>.cloudflareaccess.com/cdn-cgi/access/certs
+}
